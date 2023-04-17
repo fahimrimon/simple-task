@@ -2,12 +2,10 @@ import React, { useState } from 'react'
 import { useForm } from 'react-hook-form';
 
 function Home() {
-    const { register, handleSubmit, watch, formState: { errors } } = useForm();
+    const { register, handleSubmit, formState: { errors } } = useForm();
     const [currectlyStudying, setCurrectlyStudying] = useState("");
     const [work, setWork] = useState("");
     const [currentPosition, setCurrentPosition] = useState("");
-
-    // const [userData, setUserData] = useState([]);
 
     const userDetails = (data) => {
         console.log(data)
@@ -21,19 +19,11 @@ function Home() {
             alert("I'm currently: "+ data.isStudying + "\nNow I'm: " + data.workingStatus + "\nCompany Name: " + data.companyName + "\nJob Title: " + data.jobTitle + "\nYear of experience: " + data.yearOfExperience);
         }
         
-        
-        // setUserData(data);
     };
   return (
     <div>
         <div>
             <h2 className='text-2xl font-semibold mb-8 text-center mt-4'>Hi, I'm Fahim Rimon</h2>
-            {/* {userData?.map((user)=> <div>
-                <h2>{user.grade}</h2>
-                <h2>{user.isStudying}</h2>
-                <h2>{user.study}</h2>
-                <h2>{user.schoolNam}</h2>
-            </div>)} */}
         </div>
 
         <form className='w-[40%] mx-auto'
@@ -122,7 +112,7 @@ function Home() {
          
 
          {/* school and collage status  */}
-         {
+            {
             work === 'school' &&
             <div>
                 <div className="my-2">
