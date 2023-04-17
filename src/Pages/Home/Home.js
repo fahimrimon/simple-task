@@ -6,13 +6,39 @@ function Home() {
     const [currectlyStudying, setCurrectlyStudying] = useState("");
     const [work, setWork] = useState("");
     const [currentPosition, setCurrentPosition] = useState("");
+
+    // const [userData, setUserData] = useState([]);
+
+    const userDetails = (data) => {
+        console.log(data)
+        if(data.isStudying==='studying' && data.study==='school'){
+            alert("I'm currently: "+ data.isStudying + "\nStudying in: " + data.study + "\nSchool Name: " + data.schoolName + "\nGrade: " + data.grade);
+        }else if(data.isStudying==='studying' && data.study==='collage'){
+            alert("I'm currently: "+ data.isStudying + "\nStudying in: " + data.study + "\nCollage Name: " + data.schoolName + "\nDegree: " + data.degree + "\nGraduation Year: " + data.graduationYear);
+        }else if(data.isStudying==='NotStudying' && data.workingStatus==='Looking for a Job'){
+            alert("I'm currently: "+ data.isStudying + "\nNow I'm: " + data.workingStatus + "\nCollage Name: " + data.collageName + "\nDegree: " + data.degree + "\nGraduation Year: " + data.graduationYear);
+        }else if(data.isStudying==='NotStudying' && data.workingStatus==='Currently Working'){
+            alert("I'm currently: "+ data.isStudying + "\nNow I'm: " + data.workingStatus + "\nCompany Name: " + data.companyName + "\nJob Title: " + data.jobTitle + "\nYear of experience: " + data.yearOfExperience);
+        }
+        
+        
+        // setUserData(data);
+    };
   return (
     <div>
         <div>
             <h2 className='text-2xl font-semibold mb-8 text-center mt-4'>Hi, I'm Fahim Rimon</h2>
+            {/* {userData?.map((user)=> <div>
+                <h2>{user.grade}</h2>
+                <h2>{user.isStudying}</h2>
+                <h2>{user.study}</h2>
+                <h2>{user.schoolNam}</h2>
+            </div>)} */}
         </div>
 
-        <form className='w-[40%] mx-auto'>
+        <form className='w-[40%] mx-auto'
+        onSubmit={handleSubmit(userDetails)}
+        >
         <div>
 
             {/* currentlty studying? */}
@@ -28,7 +54,6 @@ function Home() {
                     required: { value: true},
                   })}
                   type="radio"
-                  id="isStudying"
                   name="isStudying"
                   value="studying"
                 />
@@ -43,7 +68,6 @@ function Home() {
                     required: { value: true },
                   })}
                   type="radio"
-                  id="isNotStudying"
                   name="isStudying"
                   value="NotStudying"
                 />
@@ -71,7 +95,6 @@ function Home() {
                     required: { value: true},
                   })}
                   type="radio"
-                  id="studySchool"
                   name="study"
                   value="school"
                 />
@@ -86,7 +109,6 @@ function Home() {
                     required: { value: true},
                   })}
                   type="radio"
-                  id="studyCollage"
                   name="study"
                   value="collage"
                 />
@@ -110,16 +132,20 @@ function Home() {
               <input
                 className="input input-bordered w-full h-10 mt-4"
                 {...register("schoolName", {
-                  required: { value: true},
+                  required: { value: true, message: "Please enter school name"},
                   pattern: {
                     value: /^[A-Za-z -]+$/
                   },
                 })}
                 name="schoolName"
                 type="text"
-                id="schoolName"
                 placeholder='Enter School Name'
               />
+              {errors?.schoolName && (
+                  <p className="text-red-500">
+                    {errors?.schoolName?.message}
+                  </p>
+                )}
               
             </div>
             <div className="block mt-4 ">
@@ -129,10 +155,9 @@ function Home() {
                 </label>
                 <select
                   {...register("grade", {
-                    required: { value: true},
+                    required: { value: true, message: "Select your grade"},
                   })}
                   name="grade"
-                  id="grade"
                   defaultValue="any"
                   className="h-10 select select-bordered w-full mt-4"
                 >
@@ -147,6 +172,11 @@ function Home() {
                   <option value={11}>Eleven</option>
                   <option value={12}>Twelve</option>
                 </select>
+                {errors?.grade && (
+                  <p className="text-red-500">
+                    {errors?.grade?.message}
+                  </p>
+                )}
               </div>
             </div>
             </div>
@@ -170,7 +200,6 @@ function Home() {
                 })}
                 name="schoolName"
                 type="text"
-                id="schoolName"
                 placeholder='Enter Collage Name'
               />
               
@@ -181,11 +210,10 @@ function Home() {
                   Select your latest degree
                 </label>
                 <select
-                  {...register("grade", {
+                  {...register("degree", {
                     required: { value: true},
                   })}
-                  name="grade"
-                  id="grade"
+                  name="degree"
                   defaultValue="any"
                   className="h-10 select select-bordered w-full mt-4"
                 >
@@ -203,11 +231,10 @@ function Home() {
                   Select your graduation year
                 </label>
                 <select
-                  {...register("grade", {
+                  {...register("graduationYear", {
                     required: { value: true},
                   })}
-                  name="grade"
-                  id="grade"
+                  name="graduationYear"
                   defaultValue="any"
                   className="h-10 select select-bordered w-full mt-4"
                 >
@@ -240,13 +267,12 @@ function Home() {
               <div className="flex items-center">
                 <input
                   onClick={(e) => setCurrentPosition(e.target.value)}
-                  {...register("notStudy", {
+                  {...register("workingStatus", {
                     required: { value: true},
                   })}
                   type="radio"
-                  id="studySchool"
-                  name="NotStudy"
-                  value="lookingJob"
+                  name="workingStatus"
+                  value="Looking for a Job"
                 />
                 <label htmlFor="school" className="ml-2">
                   Looking for a job
@@ -255,13 +281,12 @@ function Home() {
               <div className="flex items-center">
                 <input
                   onClick={(e) => setCurrentPosition(e.target.value)}
-                  {...register("NotStudy", {
+                  {...register("workingStatus", {
                     required: { value: true},
                   })}
                   type="radio"
-                  id="studyCollage"
-                  name="NotStudy"
-                  value="currentlyWorking"
+                  name="workingStatus"
+                  value="Currently Working"
                 />
                 <label htmlFor="collage" className="ml-2">
                   Currently working
@@ -274,7 +299,7 @@ function Home() {
         {/* if looking job */}
 
         {
-            currentPosition === 'lookingJob' &&
+            currentPosition === 'Looking for a Job' &&
             <div>
                 <div className="my-2">
               <label className="block font-semibold mt-4" htmlFor="schoolName">
@@ -282,15 +307,14 @@ function Home() {
               </label>
               <input
                 className="input input-bordered w-full h-10 mt-4"
-                {...register("schoolName", {
+                {...register("collageName", {
                   required: { value: true},
                   pattern: {
                     value: /^[A-Za-z -]+$/
                   },
                 })}
-                name="schoolName"
+                name="collageName"
                 type="text"
-                id="schoolName"
                 placeholder='Enter Collage Name'
               />
               
@@ -301,11 +325,10 @@ function Home() {
                   Select your latest degree
                 </label>
                 <select
-                  {...register("grade", {
+                  {...register("degree", {
                     required: { value: true},
                   })}
-                  name="grade"
-                  id="grade"
+                  name="degree"
                   defaultValue="any"
                   className="h-10 select select-bordered w-full mt-4"
                 >
@@ -323,11 +346,10 @@ function Home() {
                   Select your graduation year
                 </label>
                 <select
-                  {...register("grade", {
+                  {...register("graduationYear", {
                     required: { value: true},
                   })}
-                  name="grade"
-                  id="grade"
+                  name="graduationYear"
                   defaultValue="any"
                   className="h-10 select select-bordered w-full mt-4"
                 >
@@ -351,7 +373,7 @@ function Home() {
 
         {/* if working */}
         {
-            currentPosition === 'currentlyWorking' &&
+            currentPosition === 'Currently Working' &&
             <div>
                 <div className="my-2">
               <label className="block font-semibold mt-4" htmlFor="schoolName">
@@ -367,7 +389,6 @@ function Home() {
                 })}
                 name="companyName"
                 type="text"
-                id="companylName"
                 placeholder='Your Company Name'
               />
               
@@ -378,11 +399,10 @@ function Home() {
                   Select your Experience
                 </label>
                 <select
-                  {...register("grade", {
+                  {...register("yearOfExperience", {
                     required: { value: true},
                   })}
-                  name="grade"
-                  id="grade"
+                  name="yearOfExperience"
                   defaultValue="any"
                   className="h-10 select select-bordered w-full mt-4"
                 >
@@ -401,20 +421,19 @@ function Home() {
                   Select your job title
                 </label>
                 <select
-                  {...register("grade", {
+                  {...register("jobTitle", {
                     required: { value: true},
                   })}
-                  name="grade"
-                  id="grade"
+                  name="jobTitle"
                   defaultValue="any"
                   className="h-10 select select-bordered w-full mt-4"
                 >
                   <option value="any" selected disabled>
                     --- Job title ---
                   </option>
-                  <option value="frontend">Front-End Developer</option>
-                  <option value="Backend">Backend Developer</option>
-                  <option value="MERN">MERN Stack Developer</option>
+                  <option value="Frontend web Developer">Front-End Developer</option>
+                  <option value="Backend Developer">Backend Developer</option>
+                  <option value="MERN Stack Developer">MERN Stack Developer</option>
                 </select>
               </div>
             </div>
